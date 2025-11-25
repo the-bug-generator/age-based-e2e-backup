@@ -2,12 +2,15 @@
 
 set -Eeuo pipefail
 
+# log error and exit
 xerror() {
     echo "$@" >&2
     exit 1
 }
 export -f xerror
 
+# encode file name so that it's not too obvious you're uploading copyrighted data
+# encoding does not provide any kind of security, it just messes with hypothetical scanners on the cloud provider
 enc_path() {
     local path dir file file_no_ext file_ext
     path="$1"
@@ -29,6 +32,7 @@ enc_path() {
 }
 export -f enc_path
 
+# decodes file name as encoded by enc_path
 dec_path() {
     local path dir file file_no_ext file_ext
     path="$1"
@@ -45,6 +49,7 @@ dec_path() {
 }
 export -f dec_path
 
+# invokes a function and formats output based on return code so that logger can display nice stats
 wrapped() {
 
     set -Eeuo pipefail
@@ -90,6 +95,7 @@ wrapped() {
 }
 export -f wrapped
 
+# actual age encryption
 encrypt() {
     local in rel out out_dir dest_name out_meta m_key cur_meta
     in="$1"
@@ -132,6 +138,7 @@ encrypt() {
 }
 export -f encrypt
 
+# actual age decryption
 decrypt() {
     local in rel out_dir enc_name dest_name
     in="$1"
@@ -149,6 +156,7 @@ decrypt() {
 }
 export -f decrypt
 
+# sha2 check of encrypted files integrity (does not check exhaustivity, rerun --sync for that)
 check() {
     local in rel out_dir enc_name dest_name backup_hash orig_hash
     in="$1"
@@ -170,10 +178,14 @@ check() {
 }
 export -f check
 
+# nice output
 log() {
     local start now elapsed statuses_counts statuses_log c total speed last_log in_progress errors l la path_new path_changed
     start="$( date +%s )"
     last_log=$start
+
+    clear
+
     declare -A in_progress; in_progress=()
     declare -A statuses_counts; statuses_counts=()
     declare -A errors; errors=()
@@ -291,6 +303,7 @@ log() {
     fi
 }
 
+# do I need to say it
 help() {
     cat <<EOF
 Usage: $0 [OPTIONS]
@@ -424,4 +437,3 @@ else
     echo "Invalid mode specified" >&2
     help
 fi
-
