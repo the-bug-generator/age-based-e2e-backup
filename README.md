@@ -3,6 +3,7 @@ A naive bash script to perform an incremental encrypted backup from one folder t
 
 Developped for my personal use of pCloud, but would work for any cloud storage provider that allows you to mount the cloud storage as a network drive.
 
+```text
 Usage: ./age-based-e2e-backup.sh [OPTIONS]
 
 Options:
@@ -33,4 +34,4 @@ Examples:
   ./age-based-e2e-backup.sh -r -f /path/to/source -t /path/to/destination -k /path/to/keyfile -T 4
   ./age-based-e2e-backup.sh -c -f /path/to/source -t /path/to/destination -k /path/to/keyfile -T 4
   ./age-based-e2e-backup.sh -i
-
+```
