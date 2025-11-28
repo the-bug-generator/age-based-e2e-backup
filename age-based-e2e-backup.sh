@@ -107,7 +107,7 @@ encrypt() {
     fi
     if [ "$regex_exclude" != "-" ]
     then
-        grep -E "$regex_exclude" <<<"$in" >/dev/null && return 51
+        grep -E "$regex_exclude" <<<"$in" >/dev/null && return 51 || :
     fi
 
     out_dir="$( dirname -- "$path_to$rel" )"
@@ -383,8 +383,8 @@ then
     then
         rm -f pcloud-sync-key.txt
     fi
-    age-keygen -o pcloud-sync-key.txt
-    echo "The public key above and the associated secret key stored in $( realpath pcloud-sync-key.txt ) have been generated"
+    age-keygen -o e2e-sync-key.txt
+    echo "The public key above and the associated secret key stored in $( realpath e2e-sync-key.txt ) have been generated"
     echo "Store them (very) securely as encrypted backups will become useless if you lose them"
 elif [ "$mode" = "s" ] || [ "$mode" = "r" ] || [ "$mode" = "c" ]
 then
